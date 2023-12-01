@@ -1,7 +1,7 @@
 import { useState } from "react";
-
 import Card from "./Card";
 import ViewList from "./ViewList";
+import { CardProvider } from "../contexts/CardContext";
 
 function Product() {
   const [count, setCount] = useState(1);
@@ -73,12 +73,24 @@ way to add a new item to an existing array without modifying the original array.
     setPrice(1.25);
   };
 
-  return (
-    <>
-      <Card name={name} count={count} price={price} discount={discount} itemTotal={itemTotal} handlerPlus={handlerPlus} handlerMinus={handlerMinus} handlerChangeName={handlerChangeName} handlerChangePrice={handlerChangePrice} handlerAddProduct={handlerAddProduct} />
+  const ctx = {
+    name,
+    count,
+    price,
+    discount,
+    itemTotal,
+    handlerPlus,
+    handlerMinus,
+    handlerChangeName,
+    handlerChangePrice,
+    handlerAddProduct,
+  };
 
-      <ViewList list={items} subTotal={subTotal()} totalAfterDiscount={totalAfterDiscount()} />
-    </>
+  return (
+    <CardProvider value={ctx}>
+        <Card />
+        <ViewList list={items} subTotal={subTotal()} totalAfterDiscount={totalAfterDiscount()} />
+    </CardProvider>
   );
 }
 export default Product;
